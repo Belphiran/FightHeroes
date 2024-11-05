@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combate de Campeões</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Combate de Campeões</h1>
+
+        <div class="champion-form">
+            <h2>Dados do Campeão 1</h2>
+            <label>Nome: <input type="text" id="name1"></label>
+            <label>Vida: <input type="number" id="life1"></label>
+            <label>Ataque: <input type="number" id="attack1"></label>
+            <label>Armadura: <input type="number" id="armor1"></label>
+        </div>
+
+        <div class="champion-form">
+            <h2>Dados do Campeão 2</h2>
+            <label>Nome: <input type="text" id="name2"></label>
+            <label>Vida: <input type="number" id="life2"></label>
+            <label>Ataque: <input type="number" id="attack2"></label>
+            <label>Armadura: <input type="number" id="armor2"></label>
+        </div>
+
+        <label>Turnos: <input type="number" id="turns" min="1"></label>
+        <button onclick="startCombat()">Iniciar Combate</button>
+
+        <div id="combat-result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
