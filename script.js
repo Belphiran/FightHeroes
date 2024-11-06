@@ -4,28 +4,33 @@ class Champion {
         this.life = life;
         this.attack = attack;
         this.armor = armor;
-        this.initialLife = life; // Guarda o HP inicial para verificar as condições de dano
+        this.initialLife = life; // Guarda o HP inicial para decidir o intervalo de dano
     }
 
-    // Gera o dano aleatório com base no HP inicial do campeão
+    // Calcula um dano aleatório baseado no HP inicial do campeão
     calculateRandomDamage() {
         if (this.initialLife > 100) {
-            return Math.floor(Math.random() * 50) + 1; // Dano entre 1 e 50
+            // Se o HP inicial for maior que 100, dano vai de 1 a 50
+            return Math.floor(Math.random() * 50) + 1;
         } else {
-            return Math.floor(Math.random() * 12) + 1; // Dano entre 1 e 12
+            // Se não, dano vai de 1 a 12
+            return Math.floor(Math.random() * 12) + 1;
         }
     }
 
+    // Aplica o dano e garante que a vida não fique negativa
     takeDamage() {
         const damage = this.calculateRandomDamage();
-        this.life = Math.max(0, this.life - damage); // a vida não pode ser negativa
-        return damage; // Retorna o dano causado
+        this.life = Math.max(0, this.life - damage);
+        return damage; // Retorna quanto de dano foi causado pra gente mostrar
     }
 
+    // Mostra o status do campeão (se ainda está vivo ou já foi derrotado)
     status() {
         return `${this.name}: ${this.life > 0 ? this.life + " de vida" : "morreu"}`;
     }
 
+    // Verifica se o campeão ainda está vivo
     isAlive() {
         return this.life > 0;
     }
@@ -48,41 +53,83 @@ function startCombat() {
     const champion2 = new Champion(name2, life2, attack2, armor2);
 
     let result = "";
+    let currentTurn = 1;
 
-    for (let i = 1; i <= turns; i++) {
-        if (!champion1.isAlive() || !champion2.isAlive()) {
-            break;
+    // Configura o controle de volume
+    document.getElementById("volume-range").addEventListener("input", function(event) {
+        const volume = event.target.value;
+        const victorySound = document.getElementById("victory-sound");
+        victorySound.volume = volume; // Define o volume do áudio
+    });
+
+    // Função que vai executar cada turno com um intervalo de 1 segundo entre eles pra deixar mais dinâmico 
+    function executeTurn() {
+        // Checa se o combate deve acabar (fim dos turnos ou um dos campeões derrotado)
+        if (currentTurn > turns || !champion1.isAlive() || !champion2.isAlive()) {
+            let winnerText = ""; // Texto para o nome do vencedor
+    
+            // Determina o vencedor e exibe a mensagem de fim do combate
+            if (!champion1.isAlive() && !champion2.isAlive()) {
+                result += "<p>Ambos os campeões morreram. É um empate!</p>";
+                winnerText = "Empate!";
+            } else if (champion1.isAlive() && !champion2.isAlive()) {
+                result += `<p>${champion2.name} terminou com 0 HP. ${champion1.name} é o vencedor!</p>`;
+                winnerText = `${champion1.name} Venceu!`;
+            } else if (!champion1.isAlive() && champion2.isAlive()) {
+                result += `<p>${champion1.name} terminou com 0 HP. ${champion2.name} é o vencedor!</p>`;
+                winnerText = `${champion2.name} Venceu!`;
+            } else {
+                if (champion1.life > champion2.life) {
+                    result += `<p>O combate terminou. ${champion1.name} tem mais HP (${champion1.life} de vida) e é o vencedor!</p>`;
+                    winnerText = `${champion1.name} Venceu!`;
+                } else if (champion2.life > champion1.life) {
+                    result += `<p>O combate terminou. ${champion2.name} tem mais HP (${champion2.life} de vida) e é o vencedor!</p>`;
+                    winnerText = `${champion2.name} Venceu!`;
+                } else {
+                    result += "<p>O combate terminou em empate, ambos os campeões têm a mesma quantidade de HP!</p>";
+                    winnerText = "Empate!";
+                }
+            }
+    
+            // Exibe o nome do vencedor e o gif
+            document.getElementById("combat-result").innerHTML = result;
+            document.getElementById("winner-name").innerHTML = winnerText;
+            document.getElementById("winner-name").style.display = "block";
+            document.getElementById("end-gif").style.display = "block";
+            
+            // Toca o áudio da vitória
+            const victorySound = document.getElementById("victory-sound");
+            victorySound.play().catch(error => {
+                console.log("O autoplay do áudio foi bloqueado pelo navegador.", error);
+            });
+
+            // Rolagem automática para o final da div
+            document.getElementById("combat-result").scrollTop = document.getElementById("combat-result").scrollHeight;
+    
+            return;
         }
 
-        // Aplica dano aleatório a cada campeão
+        // Executa o turno atual e calcula o dano para cada campeão
         const damageToChamp1 = champion1.takeDamage();
         const damageToChamp2 = champion2.takeDamage();
 
-        // Exibe o resultado do turno com a quantidade de dano em vermelho na tela
-        result += `<p>Resultado do turno ${i}:</p>`;
+        // Mostra o que aconteceu nesse turno
+        result += `<p>Resultado do turno ${currentTurn}:</p>`;
         result += `<p>${champion1.status()} <span class="damage">(${champion1.name} recebeu ${damageToChamp1} de dano!)</span></p>`;
         result += `<p>${champion2.status()} <span class="damage">(${champion2.name} recebeu ${damageToChamp2} de dano!)</span></p>`;
         result += `<hr>`;
+        
+        // Atualiza o conteúdo da tela
+        document.getElementById("combat-result").innerHTML = result;
+
+        // Rolagem automática para o final da div a cada turno
+        document.getElementById("combat-result").scrollTop = document.getElementById("combat-result").scrollHeight;
+
+        currentTurn++;
+        // Espera 1 segundo antes de rodar o próximo turno
+        setTimeout(executeTurn, 1000);
     }
 
-    // Determina o vencedor
-    if (!champion1.isAlive() && !champion2.isAlive()) {
-        result += "<p>Ambos os campeões morreram. É um empate!</p>";
-    } else if (champion1.isAlive() && !champion2.isAlive()) {
-        result += `<p>${champion2.name} terminou com 0 HP. ${champion1.name} é o vencedor!</p>`;
-    } else if (!champion1.isAlive() && champion2.isAlive()) {
-        result += `<p>${champion1.name} terminou com 0 HP. ${champion2.name} é o vencedor!</p>`;
-    } else {
-        // Se ambos ainda estão vivos, vence o que tiver mais HP
-        if (champion1.life > champion2.life) {
-            result += `<p>O combate terminou. ${champion1.name} terminou com mais HP (${champion1.life} de vida) e é o vencedor!</p>`;
-        } else if (champion2.life > champion1.life) {
-            result += `<p>O combate terminou. ${champion2.name} terminou com mais HP (${champion2.life} de vida) e é o vencedor!</p>`;
-        } else {
-            result += "<p>O combate terminou em empate, ambos os campeões têm a mesma quantidade de HP!</p>";
-        }
-    }
-
-    result += "<p>### FIM DO COMBATE ###</p>";
-    document.getElementById("combat-result").innerHTML = result;
+    // Começa o primeiro turno
+    executeTurn();
 }

@@ -1,0 +1,48 @@
+{
+    "app_name": "PORRADA",
+    "author": "",
+    "bugs": {
+        "url": "https://github.com/Belphiran/FightHeroes/issues"
+    },
+    "devDependencies": {
+        "electron": "^33.1.0"
+    },
+    "homepage": "https://github.com/Belphiran/FightHeroes#readme",
+    "license": "ISC",
+    "main": "index.html",
+    "name": "porrada",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Belphiran/FightHeroes.git"
+    },
+    "scripts": {
+        "start": "electron ."
+    },
+    "webexe_settings": {
+        "blacklist": "",
+        "custom_script": "",
+        "download_dir": "",
+        "export_dir": "output",
+        "force_download": false,
+        "nw_compression_level": 0,
+        "nw_version": "0.93.0",
+        "output_pattern": "",
+        "sdk_build": false,
+        "uncompressed_folder": false,
+        "whitelist": "",
+        "windows-x32": true,
+        "windows-x64": true
+    },
+    "webkit": {},
+    "window": {
+        "exe_icon": "photo_2023-04-19_15-17-39.jpg",
+        "frame": true,
+        "icon": "photo_2023-04-19_15-17-39.jpg",
+        "id": "PORRADA",
+        "resizable": true,
+        "show": true,
+        "show_in_taskbar": true,
+        "title": "PORRADA",
+        "visible": true
+    }
+}

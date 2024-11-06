@@ -4,6 +4,7 @@
 }
 
 body {
+    /* Centraliza tudo bonitinho na tela */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,6 +14,7 @@ body {
 }
 
 .container {
+    /* Limita a largura, dá um fundo branco e um toque de sombra */
     width: 90%;
     max-width: 600px;
     padding: 20px;
@@ -22,20 +24,24 @@ body {
 }
 
 h1, h2 {
+    /* Centraliza os títulos */
     text-align: center;
 }
 
 .champion-form {
+    /* Espaço entre os blocos de formulário */
     margin-bottom: 20px;
 }
 
 label {
+    /* Cada label e input com espaço */
     display: block;
     margin-bottom: 5px;
 }
 
 input[type="text"],
 input[type="number"] {
+    /* Inputs ficam mais amplos, com um visual mais clean */
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -43,12 +49,18 @@ input[type="number"] {
     font-family: inherit;
     -webkit-appearance: none;
     border-radius: 0;
-    padding: 0;
     cursor: text;
-    
+    transition: all 0.2s;
+}
+
+input:focus {
+    /* Destaque sutil quando o input está ativo */
+    outline: 0;
+    border-bottom: 1px solid #666;
 }
 
 button {
+    /* Botão cheio, arredondado, com efeito de transição */
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -57,29 +69,125 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
+    /* Botão muda de cor quando passa o mouse */
     background-color: #79caf3;
 }
 
 #combat-result {
+    /* Espaço acima e destaque para o resultado */
     margin-top: 20px;
     font-weight: bold;
 }
 
 .damage {
+    /* Dano fica em vermelho pra chamar atenção */
     color: red;
     font-weight: bold;
 }
 
-label, input {
-    transition: all 0.2s;
-    touch-action: manipulation;
-  }
+/* Contêiner do GIF final, começa escondido */
+#end-gif {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
 
-  input:focus {
-    outline: 0;
-    border-bottom: 1px solid #666;
-  }
+/* Dá um toque pro GIF ficar bem integrado no layout */
+.tenor-gif-embed {
+    max-width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Nome do vencedor com tremor e piscar colorido */
+#winner-name {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    animation: blink-color 1s infinite, shake 0.5s infinite; /* Piscar e tremer juntos */
+}
+
+/* Animação de piscar com cores */
+@keyframes blink-color {
+    0% { color: #FF5733; }
+    25% { color: #33FF57; }
+    50% { color: #3357FF; }
+    75% { color: #F3FF33; }
+    100% { color: #FF33A8; }
+}
+
+/* Animação de tremor */
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+#combat-result {
+    margin-top: 20px;
+    font-weight: bold;
+    max-height: 300px; /* Define uma altura máxima */
+    overflow-y: auto;  /* Adiciona rolagem vertical */
+}
+
+#end-gif {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+    position: relative; /* Para posicionar elementos relativos ao contêiner */
+}
+
+/* Estilo do controle de volume, posicionado dentro do contêiner final */
+#volume-control {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 10px; /* Espaço entre o GIF e o controle */
+    justify-content: center;
+}
+
+
+.credits {
+    text-align: center;
+    font-size: 0.9rem; /* Tamanho de fonte menor */
+    color: #666; /* Cor mais suave */
+    margin-top: -10px; /* Ajusta o espaçamento */
+    margin-bottom: 20px; /* Espaço abaixo */
+}
+
+
+/* frescurinhas */
+
+.champion-form h2 {
+    transition: transform 0.3s ease; /* Suaviza a transição */
+}
+
+.champion-form h2:hover {
+    transform: scale(1.1); /* Aumenta levemente o título quando o mouse passa por cima */
+}
+
+
+
+
+
 
